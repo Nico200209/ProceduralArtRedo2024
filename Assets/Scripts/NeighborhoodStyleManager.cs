@@ -1,30 +1,26 @@
+using Demo;
 using UnityEngine;
 
 public class NeighborhoodStyleManager : MonoBehaviour
 {
-    public BuildingStyle[] styles;
+    public Neighborhood[] neighborhoods;
 
-    void Start()
-    {
-        if (styles.Length > 0)
-        {
-            Debug.Log("Applying style: " + styles[0].name);
-            ApplyStyleToBuildings(styles[0]); // Apply the first style in the array
-        }
-        else
-        {
-            Debug.LogError("No styles assigned in NeighborhoodStyleManager.");
-        }
-    }
+    public GridCity gridCity;
 
-    public void ApplyStyleToBuildings(BuildingStyle style)
+    public void ApplyStylesToNeighborhoods()
     {
-        BuildingCustomization[] buildings = FindObjectsOfType<BuildingCustomization>();
-        Debug.Log("Found " + buildings.Length + " buildings to apply style to.");
-        foreach (var building in buildings)
+        foreach (var neighborhood in neighborhoods)
         {
-            Debug.Log("Applying style to building: " + building.gameObject.name);
-            building.ApplyStyle(style);
+            if (neighborhood != null && neighborhood.style != null)
+            {
+                neighborhood.ApplyStyleToBuildings();
+            }
+        }
+
+
+        if (gridCity != null)
+        {
+            gridCity.GenerateCity();
         }
     }
 }
