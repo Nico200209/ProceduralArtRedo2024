@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BuildingCustomization : MonoBehaviour
 {
-    public float buildingHeight = 10f;
+    public float buildingHeight = 0f;
     public Color buildingColor = Color.gray;
 
     private void Start()

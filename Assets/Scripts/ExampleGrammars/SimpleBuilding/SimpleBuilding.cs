@@ -36,6 +36,7 @@ namespace Demo
         {
             if (buildingStyle != null)
             {
+                Debug.Log("Applying building style. Height: " + buildingStyle.height + ", Stock Prefab: " + buildingStyle.stockPrefab.name + ", Roof Prefab: " + buildingStyle.roofPrefab.name);
                 stockPrefabs = new GameObject[] { buildingStyle.stockPrefab };
                 roofPrefabs = new GameObject[] { buildingStyle.roofPrefab };
                 stockHeight = buildingStyle.height;
@@ -51,6 +52,15 @@ namespace Demo
                 // First spawn a new stock...
                 GameObject newStock = SpawnPrefab(ChooseRandom(stockPrefabs));
 
+                // Update the customization component
+                BuildingCustomization customization = newStock.GetComponent<BuildingCustomization>();
+                if (customization != null)
+                {
+                    customization.buildingHeight = stockHeight;
+                    customization.buildingColor = buildingStyle.color;
+                    customization.ApplyCustomization();
+                }
+
                 // ...and then continue with the remainder of the building, right above the spawned stock:
                 // Create a new symbol - make sure to increase the y-coordinate:
                 SimpleBuilding remainingBuilding = CreateSymbol<SimpleBuilding>("stock", new Vector3(0, stockHeight, 0));
@@ -63,6 +73,15 @@ namespace Demo
             {
                 // Spawn a roof and stop:
                 GameObject newRoof = SpawnPrefab(ChooseRandom(roofPrefabs));
+
+                // Update the customization component
+                BuildingCustomization customization = newRoof.GetComponent<BuildingCustomization>();
+                if (customization != null)
+                {
+                    customization.buildingHeight = stockHeight;
+                    customization.buildingColor = buildingStyle.color;
+                    customization.ApplyCustomization();
+                }
             }
         }
     }

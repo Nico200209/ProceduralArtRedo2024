@@ -1,3 +1,4 @@
+using Demo;
 using UnityEditor;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ public class BuildingPlacementTool : EditorWindow
 {
     private GameObject buildingPrefab;
     private BuildingStyle buildingStyle;
-    private new Vector3 position = Vector3.zero;
+    private Vector3 position = Vector3.zero;
 
     [MenuItem("Tools/Building Placement Tool")]
     public static void ShowWindow()
@@ -34,15 +35,20 @@ public class BuildingPlacementTool : EditorWindow
             GameObject newBuilding = (GameObject)PrefabUtility.InstantiatePrefab(buildingPrefab);
             newBuilding.transform.position = position;
 
-            Demo.SimpleBuilding simpleBuilding = newBuilding.GetComponent<Demo.SimpleBuilding>();
-            if (simpleBuilding != null)
+            BuildingCustomization customization = newBuilding.GetComponent<BuildingCustomization>();
+            if (customization != null)
             {
-                simpleBuilding.buildingStyle = buildingStyle;
-                simpleBuilding.Generate();
+                // Set the building height and color from the BuildingStyle
+                if (buildingStyle != null)
+                {
+                    customization.buildingHeight = buildingStyle.height;
+                    customization.buildingColor = buildingStyle.color;
+                }
+                customization.ApplyCustomization(); // Apply customization with the correct height and color
             }
             else
             {
-                Debug.LogWarning("The selected prefab does not have a SimpleBuilding component.");
+                Debug.LogWarning("The selected prefab does not have a BuildingCustomization component.");
             }
         }
         else
@@ -50,4 +56,5 @@ public class BuildingPlacementTool : EditorWindow
             Debug.LogWarning("No building prefab selected.");
         }
     }
+
 }

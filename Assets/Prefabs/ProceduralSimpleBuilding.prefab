@@ -72,7 +72,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildKey: 32
   BuildOnStart: 1
-  DelayBeforeBuild: 5
+  DelayBeforeBuild: 1
 --- !u!114 &-3478785973443434597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,5 +85,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ba4e9e10f76b4958bd8e531f6648eca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingHeight: 10
+  buildingHeight: 0
   buildingColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
