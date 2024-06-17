@@ -6,7 +6,7 @@ namespace Demo
     {
         public int buildingHeight = -1; // The total building height (=#stocks) - value should be the same for all stocks
         public float stockHeight = 1; // The height of one stock. Change this value depending on the height of your stock prefabs
-        public float foundationHeight = 0.5f; // The height of the foundation block
+        public const float foundationHeight = 1; // The height of the foundation. This should always be the same and is now a constant value.
         // If buildingHeight is negative, a random building height will be chosen between these two limits:
         public int maxHeight = 5;
         public int minHeight = 1;
@@ -36,14 +36,6 @@ namespace Demo
 
         protected override void Execute()
         {
-            if (buildingStyle != null)
-            {
-                Debug.Log("Applying building style. Height: " + buildingStyle.height + ", Stock Prefab: " + buildingStyle.stockPrefab.name + ", Roof Prefab: " + buildingStyle.roofPrefab.name);
-                stockPrefabs = new GameObject[] { buildingStyle.stockPrefab };
-                roofPrefabs = new GameObject[] { buildingStyle.roofPrefab };
-                stockHeight = buildingStyle.height;
-            }
-
             if (buildingHeight < 0)
             { // This is only done once for the root symbol
                 buildingHeight = Random.Range(minHeight, maxHeight + 1);
@@ -54,12 +46,12 @@ namespace Demo
                 // Spawn the foundation block
                 GameObject foundation = SpawnPrefab(foundationPrefab);
 
-                // Update the customization component
+                // Ensure the foundation has a fixed height and color
                 BuildingCustomization customization = foundation.GetComponent<BuildingCustomization>();
                 if (customization != null)
                 {
                     customization.buildingHeight = foundationHeight;
-                    customization.buildingColor = buildingStyle.color;
+                    customization.buildingColor = Color.gray; // Default color or any other fixed color
                     customization.ApplyCustomization();
                 }
 
@@ -70,6 +62,14 @@ namespace Demo
             }
             else if (stockNumber < buildingHeight)
             {
+                // Apply the building style only to the stocks and roofs
+                if (buildingStyle != null)
+                {
+                    stockPrefabs = new GameObject[] { buildingStyle.stockPrefab };
+                    roofPrefabs = new GameObject[] { buildingStyle.roofPrefab };
+                    stockHeight = buildingStyle.height;
+                }
+
                 // First spawn a new stock...
                 GameObject newStock = SpawnPrefab(ChooseRandom(stockPrefabs));
 
@@ -78,7 +78,7 @@ namespace Demo
                 if (customization != null)
                 {
                     customization.buildingHeight = stockHeight;
-                    customization.buildingColor = buildingStyle.color;
+                    customization.buildingColor = buildingStyle != null ? buildingStyle.color : Color.gray;
                     customization.ApplyCustomization();
                 }
 
@@ -100,7 +100,7 @@ namespace Demo
                 if (customization != null)
                 {
                     customization.buildingHeight = stockHeight;
-                    customization.buildingColor = buildingStyle.color;
+                    customization.buildingColor = buildingStyle != null ? buildingStyle.color : Color.gray;
                     customization.ApplyCustomization();
                 }
             }
