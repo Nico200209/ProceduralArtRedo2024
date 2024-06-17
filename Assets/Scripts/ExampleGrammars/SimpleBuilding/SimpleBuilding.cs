@@ -6,10 +6,12 @@ namespace Demo
     {
         public int buildingHeight = -1; // The total building height (=#stocks) - value should be the same for all stocks
         public float stockHeight = 1; // The height of one stock. Change this value depending on the height of your stock prefabs
+        public float foundationHeight = 0.5f; // The height of the foundation block
         // If buildingHeight is negative, a random building height will be chosen between these two limits:
         public int maxHeight = 5;
         public int minHeight = 1;
 
+        public GameObject foundationPrefab; // Your foundation prefab
         public GameObject[] stockPrefabs; // Your stock prefabs (make sure they all have the same height)
         public GameObject[] roofPrefabs; // Your roof prefabs (may have different height)
 
@@ -47,7 +49,26 @@ namespace Demo
                 buildingHeight = Random.Range(minHeight, maxHeight + 1);
             }
 
-            if (stockNumber < buildingHeight)
+            if (stockNumber == 0)
+            {
+                // Spawn the foundation block
+                GameObject foundation = SpawnPrefab(foundationPrefab);
+
+                // Update the customization component
+                BuildingCustomization customization = foundation.GetComponent<BuildingCustomization>();
+                if (customization != null)
+                {
+                    customization.buildingHeight = foundationHeight;
+                    customization.buildingColor = buildingStyle.color;
+                    customization.ApplyCustomization();
+                }
+
+                // Create the rest of the building above the foundation
+                SimpleBuilding remainingBuilding = CreateSymbol<SimpleBuilding>("stock", new Vector3(0, foundationHeight, 0));
+                remainingBuilding.Initialize(buildingHeight, stockHeight, stockNumber + 1, stockPrefabs, roofPrefabs);
+                remainingBuilding.Generate(buildDelay);
+            }
+            else if (stockNumber < buildingHeight)
             {
                 // First spawn a new stock...
                 GameObject newStock = SpawnPrefab(ChooseRandom(stockPrefabs));

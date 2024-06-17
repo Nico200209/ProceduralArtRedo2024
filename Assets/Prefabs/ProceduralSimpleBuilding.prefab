@@ -51,9 +51,10 @@ MonoBehaviour:
   stockHeight: 1
   maxHeight: 5
   minHeight: 2
+  foundationPrefab: {fileID: 4630473164913541460, guid: 5e149f377887ae0418f31147accf2925,
+    type: 3}
   stockPrefabs:
   - {fileID: 2639242805350684441, guid: 4e431be3aef108b47a70fc5e9e63d133, type: 3}
-  - {fileID: 4630473164913541460, guid: 5e149f377887ae0418f31147accf2925, type: 3}
   roofPrefabs:
   - {fileID: 4977362457285617005, guid: ee7ae2596ddf3924da8d647fe05fb617, type: 3}
   - {fileID: 4357396193210809381, guid: 52629463b6271fe46b5a5eeebe8294e3, type: 3}
